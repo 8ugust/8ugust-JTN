@@ -2,6 +2,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from configparser import ConfigParser
 from email.mime.text import MIMEText
 from selenium import webdriver
 import smtplib
@@ -10,18 +11,21 @@ import smtplib
 # ==================== ==================== ==================== ====================
 # Function Send E-Mail 
 def send_email(sender, receiver, subject, content):
-    # 이메일 생성
+    
     msg = MIMEText(content)
     msg['Subject'] = subject
     msg['From'] = sender
     msg['To'] = receiver
 
-    # 이메일 서버에 연결
+    config = ConfigParser()
+    config.read('conf.ini')
+    email = config['gmail']['email']
+    pswrd = config['gmail']['pswrd']
+
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
-    server.login('', '')
+    server.login(email, pswrd)
 
-    # 이메일 보내기
     server.sendmail(sender, receiver, msg.as_string())
     server.quit()
 
