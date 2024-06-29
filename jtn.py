@@ -1,3 +1,4 @@
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options
@@ -45,6 +46,10 @@ with open('./jtn.txt', 'rt') as f:
 chrome_options = Options()
 chrome_options.add_argument("headless")
 chrome_options.add_argument('--log-level=3')
+chrome_options.add_argument('--blink-settings=imagesEnabled=false')
+
+caps = DesiredCapabilities().CHROME
+caps["pageLoadStrategy"] = "none"
 
 
 # Creaete Chrome Driver
@@ -61,6 +66,7 @@ liArr = evt_proceed.find_elements(By.TAG_NAME, 'li')
 
 # Loop List
 newArr = []
+isUpdt = False
 for li in liArr:
     href = li.find_element(By.TAG_NAME, 'a').get_attribute('href')
     text = li.find_element(By.CLASS_NAME, 'tit').text
@@ -69,11 +75,17 @@ for li in liArr:
 
     # Send E-Mail New Content 
     if contnet_id not in txtArr:
+        isUpdt = True
+        print('[Log] Uploded New Content')
         send_email('gks83123@gmail.com', 'gks831@kakao.com', '[JTN][신규이벤트]', text)
 
     # Write New File
     with open('jtn.txt', 'w') as f:
         f.writelines(newArr)
+
+
+if isUpdt == False:
+    print('[Log] Nothing Changed Contents')
 
 
 # End
