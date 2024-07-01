@@ -7,7 +7,7 @@ from configparser import ConfigParser
 from email.mime.text import MIMEText
 from selenium import webdriver
 import smtplib
-
+import time
 
 # ==================== ==================== ==================== ====================
 # Function Send E-Mail 
@@ -19,7 +19,7 @@ def send_email(sender, receiver, subject, content):
     msg['To'] = receiver
 
     config = ConfigParser()
-    config.read('/root/app/8ugust-JTN/conf.ini')
+    config.read('./conf.ini')
     email = config['gmail']['email']
     pswrd = config['gmail']['pswrd']
 
@@ -35,7 +35,7 @@ def send_email(sender, receiver, subject, content):
 # ==================== ==================== ==================== ====================
 # Get Event ID Array From Text File
 txtArr = []
-with open('/root/app/8ugust-JTN/jtn.txt', 'rt') as f:
+with open('./jtn.txt', 'rt') as f:
     for line in f:
         txtArr.append(line.strip('\n'))
 
@@ -63,6 +63,7 @@ driver.get(url='https://www.jtnevent.com/event/vindex.php')
 wait = WebDriverWait(driver, 5)
 evt_proceed = wait.until(EC.visibility_of_element_located((By.ID, 'evt_proceed')))
 liArr = evt_proceed.find_elements(By.TAG_NAME, 'li')
+now = "[" + time.strftime('%Y-%m-%d %H:%M:%S') + "]"
 
 
 # Loop List
@@ -77,16 +78,16 @@ for li in liArr:
     # Send E-Mail New Content 
     if contnet_id not in txtArr:
         isUpdt = True
-        print('[Log] Uploded New Content')
+        print('[Log]' + now + ' Uploded New Content')
         send_email('gks83123@gmail.com', 'gks831@kakao.com', '[JTN][신규이벤트]', text)
 
     # Write New File
-    with open('/root/app/8ugust-JTN/jtn.txt', 'w') as f:
+    with open('./jtn.txt', 'w') as f:
         f.writelines(newArr)
 
 
 if isUpdt == False:
-    print('[Log] Nothing Changed Contents')
+    print('[Log]' + now + ' Nothing Changed Contents')
 
 
 # End
