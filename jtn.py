@@ -19,7 +19,7 @@ def send_email(sender, receiver, subject, content):
     msg['To'] = receiver
 
     config = ConfigParser()
-    config.read('conf.ini')
+    config.read('/root/app/8ugust-JTN/conf.ini')
     email = config['gmail']['email']
     pswrd = config['gmail']['pswrd']
 
