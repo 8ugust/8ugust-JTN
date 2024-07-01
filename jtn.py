@@ -35,7 +35,7 @@ def send_email(sender, receiver, subject, content):
 # ==================== ==================== ==================== ====================
 # Get Event ID Array From Text File
 txtArr = []
-with open('./jtn.txt', 'rt') as f:
+with open('/root/app/8ugust-JTN/jtn.txt', 'rt') as f:
     for line in f:
         txtArr.append(line.strip('\n'))
 
@@ -81,7 +81,7 @@ for li in liArr:
         send_email('gks83123@gmail.com', 'gks831@kakao.com', '[JTN][신규이벤트]', text)
 
     # Write New File
-    with open('jtn.txt', 'w') as f:
+    with open('/root/app/8ugust-JTN/jtn.txt', 'w') as f:
         f.writelines(newArr)
 
 
