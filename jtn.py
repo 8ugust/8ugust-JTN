@@ -38,8 +38,7 @@ txtArr = []
 with open('./jtn.txt', 'rt') as f:
     for line in f:
         txtArr.append(line.strip('\n'))
-
-
+        
 
 # ==================== ==================== ==================== ====================
 # Protecting Close Browser
@@ -68,27 +67,20 @@ now = "[" + time.strftime('%Y-%m-%d %H:%M:%S') + "]"
 
 # Loop List
 newArr = []
-isUpdt = False
 for li in liArr:
     href = li.find_element(By.TAG_NAME, 'a').get_attribute('href')
     text = li.find_element(By.CLASS_NAME, 'tit').text
-    contnet_id = href.split('=')[1] + "\n"
-    newArr.append(contnet_id)
+    contnet_id = href.split('=')[1]
+    newArr.append(contnet_id + "\n")
 
-    # Send E-Mail New Content 
+    # Send E-Mail New Content
     if contnet_id not in txtArr:
-        isUpdt = True
         print('[Log]' + now + ' Uploded New Content')
         send_email('gks83123@gmail.com', 'gks831@kakao.com', '[JTN][신규이벤트]', text)
 
     # Write New File
     with open('./jtn.txt', 'w') as f:
         f.writelines(newArr)
-
-
-if isUpdt == False:
-    print('[Log]' + now + ' Nothing Changed Contents')
-
 
 # End
 driver.quit()
