@@ -72,7 +72,7 @@ isUpdt = False
 for li in liArr:
     href = li.find_element(By.TAG_NAME, 'a').get_attribute('href')
     text = li.find_element(By.CLASS_NAME, 'tit').text
-    contnet_id = href.split('=')[1]
+    contnet_id = href.split('=')[1] + "\n"
     newArr.append(contnet_id)
 
     # Send E-Mail New Content 
